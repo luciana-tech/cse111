@@ -166,7 +166,7 @@ def main():
         "FeS2": "iron pyrite",
         "H2O": "water"
     }
-    
+
     #Get a chemical formula for a molecule from the user.
     chemical_formula = (input("Please enter chemical formula for a molecule: "))
 
@@ -185,9 +185,13 @@ def main():
     #Compute numbers of moles in the sample
     moles = mass / molar_mass
 
+    # Get the compound name
+    compound_name = get_formula_name(chemical_formula, known_molecules_dict)
+
     #print results
     print(f"Molar mass: {molar_mass:.5f} grams/mole")
     print(f"Number of moles: {moles:.5f} moles")
+    print(f"Compound Name: {compound_name}")
 
 if __name__ == "__main__":
     main()     
