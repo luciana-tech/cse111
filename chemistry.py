@@ -157,9 +157,9 @@ def main():
     #Compute numbers of moles in the sample
     moles = mass / molar_mass
 
-    for element in periodic_table:
-        print(f"{element[1]}: {element[2]} amu")
-
+    #print results
+    print(f"Molar mass: {molar_mass} g/mol")
+    print(f"Number of moles: {moles} mol")
 
 if __name__ == "__main__":
     main()     
