@@ -1,6 +1,6 @@
 # Copyright 2020, Brigham Young University-Idaho. All rights reserved.
 
-from random_numbers import append_random_numbers
+from random_number import append_random_numbers
 # from random_numbers import append_random_words
 import pytest
 
