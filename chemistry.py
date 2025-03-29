@@ -1,7 +1,7 @@
 #This program is a molar mass calculator
 
 def make_periodic_table():
-    return periodic_table_list = [ 
+    periodic_table_list = [ 
     ["Ac","Actinium", 227],
     ["Ag", "Silver", 107.8682], 
     ["Al","Aluminum", 26.9815386],
@@ -97,6 +97,7 @@ def make_periodic_table():
     ["Zn",	"Zinc",	65.38],
     ["Zr",	"Zirconium", 91.224]
     ]
+    return periodic_table_list
 
 def main():
     '''Get a chemical formula for a molecule from the user.'
@@ -104,10 +105,13 @@ def main():
     chemical_formula = (input("Please enter chemical formula for a molecule: "))
     '''Get the mass of a chemical sample in grams from the user.'
     '''
-    mass = float(input("Enter the mass of a chemical sample in grams: "))
+    mass = float(input("Enter the mass of the sample in grams: "))
     '''Call make_periodic_table function and store the returned list'
     '''
     periodic_table = make_periodic_table()
 
+for element in periodic_table:
+        print(f"{element[1]}: {element[2]} amu")
+        
 if __name__ == "__main__":
     main()     
