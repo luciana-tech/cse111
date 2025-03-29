@@ -138,7 +138,35 @@ def compute_molar_mass(symbol_quantity_list, periodic_table_dict):
         total_mass += atomic_mass * quantity
     return total_mass
 
+def get_formula_name(formula, known_molecules_dict):
+    """Try to find formula in the known_molecules_dict.
+    If formula is in the known_molecules_dict, return
+    the name of the chemical formula; otherwise return
+    "unknown compound".
+    """
+    return known_molecules_dict.get(formula, "unknown compound")
+
 def main():
+    # Dictionary of known molecules
+    known_molecules_dict = {
+        "Al2O3": "aluminum oxide",
+        "CH3OH": "methanol",
+        "C2H6O": "ethanol",
+        "C2H5OH": "ethanol",
+        "C3H8O": "isopropyl alcohol",
+        "C3H8": "propane",
+        "C4H10": "butane",
+        "C6H6": "benzene",
+        "C6H14": "hexane",
+        "C8H18": "octane",
+        "CH3(CH2)6CH3": "octane",
+        "C13H18O2": "ibuprofen",
+        "C13H16N2O2": "melatonin",
+        "Fe2O3": "iron oxide",
+        "FeS2": "iron pyrite",
+        "H2O": "water"
+    }
+    
     #Get a chemical formula for a molecule from the user.
     chemical_formula = (input("Please enter chemical formula for a molecule: "))
 
