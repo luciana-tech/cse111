@@ -135,7 +135,7 @@ def compute_molar_mass(symbol_quantity_list, periodic_table_dict):
     total_mass = 0
     for symbol, quantity in symbol_quantity_list:
         atomic_mass = periodic_table_dict[symbol][1]
-        total_mass += * quantity
+        total_mass += atomic_mass * quantity
     return total_mass
 
 def main():
