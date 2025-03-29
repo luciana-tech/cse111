@@ -158,8 +158,8 @@ def main():
     moles = mass / molar_mass
 
     #print results
-    print(f"Molar mass: {molar_mass} g/mol")
-    print(f"Number of moles: {moles} mol")
+    print(f"Molar mass: {molar_mass:.5f} grams/mole")
+    print(f"Number of moles: {moles:.5f} moles")
 
 if __name__ == "__main__":
     main()     
