@@ -110,8 +110,8 @@ def main():
     '''
     periodic_table = make_periodic_table()
 
-for element in periodic_table:
+    for element in periodic_table:
         print(f"{element[1]}: {element[2]} amu")
-        
+
 if __name__ == "__main__":
     main()     
