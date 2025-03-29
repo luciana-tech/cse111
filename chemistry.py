@@ -1,6 +1,8 @@
 #This program is a molar mass calculator
+from formula import parse_formula
 
 def make_periodic_table():
+    #creates and returns a compound list of a periodic table
     periodic_table_list = [ 
     ["Ac","Actinium", 227],
     ["Ag", "Silver", 107.8682], 
