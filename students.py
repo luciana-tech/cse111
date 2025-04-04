@@ -1,7 +1,17 @@
 import csv
 def main ():
+    
+    #Get input from the user
     ID_INDEX = 0
+    student_index = input("Enter the sudent I-Number: ")
     students_dict = read_dictionary("students.csv", ID_INDEX)
+
+    if student_index in students_dict.keys():
+        print(students_dict[student_index][1])
+    
+    else:
+        print("No such student")
+
 
 def read_dictionary(filename, key_column_index):
     dictionary = {}
@@ -22,9 +32,6 @@ def read_dictionary(filename, key_column_index):
     # Return the dictionary.
     return dictionary
 
-#Get input from the user
-def get_inumber(ID_INDEX) 
-print(input("Enter the sudent I-Number: "))
 
         
 # Call main to start this program.
