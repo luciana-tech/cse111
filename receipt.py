@@ -2,6 +2,7 @@ from datetime import datetime
 from datetime import date
 import csv
 
+#Exceeding requirements: print a reminder of how many days until the New Years Sale begins (Jan 1) at the bottom of the receipt.
 current_date_and_time = datetime.now()
 
 
@@ -24,8 +25,7 @@ def read_dictionary(filename, key_column_index):
                     dictionary[key] = row_list
     except FileNotFoundError:
         print("Error: Missing file 'products.csv' was not found.")
-    except PermissionError:
-        print("Error: You do not have permission to read 'products.csv'.")                
+                    
 # Return the dictionary.
     return dictionary
 
@@ -78,9 +78,6 @@ def main():
 
     except FileNotFoundError:
         print("Error: The file 'request.csv' was not found.")
-
-    except PermissionError:
-        print("Error: You do not have permission to read 'request.csv'.")
 
     except KeyError as e:
         print(f"Error: Product ID {e} not found in request.csv was not found in products dicionary")
