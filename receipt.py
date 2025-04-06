@@ -1,4 +1,5 @@
 from datetime import datetime
+from datetime import date
 import csv
 
 current_date_and_time = datetime.now()
@@ -6,21 +7,26 @@ current_date_and_time = datetime.now()
 
 def read_dictionary(filename, key_column_index):
     dictionary = {}
-    with open(filename, "rt") as csv_file:
-        reader = csv.reader(csv_file)
-        #skip the first row/heading of the CSV file.
-        next(reader)
-        #Reads the rows in the CSV file one row at a time.
-        #The reader object returns each row as a list.
-        for row_list in reader:
-            if len(row_list) != 0:
-        # From the current row, retrieve the data
-        # from the column that contains the key.
-                key = row_list[key_column_index]
-                # Store the data from the current
-                # row into the dictionary.
-                dictionary[key] = row_list
-    # Return the dictionary.
+    try:
+        with open(filename, "rt") as csv_file:
+            reader = csv.reader(csv_file)
+            #skip the first row/heading of the CSV file.
+            next(reader)
+            #Reads the rows in the CSV file one row at a time.
+            #The reader object returns each row as a list.
+            for row_list in reader:
+                if len(row_list) != 0:
+            # From the current row, retrieve the data
+            # from the column that contains the key.
+                    key = row_list[key_column_index]
+                    # Store the data from the current
+                    # row into the dictionary.
+                    dictionary[key] = row_list
+    except FileNotFoundError:
+        print("Error: Missing file 'products.csv' was not found.")
+    except PermissionError:
+        print("Error: You do not have permission to read 'products.csv'.")                
+# Return the dictionary.
     return dictionary
 
 
@@ -29,6 +35,13 @@ def main():
     products_dict = read_dictionary("products.csv", 0)
     PRODUCT_NAME_INDEX = 1
     PRODUCT_PRICE_INDEX = 2
+
+     # Print days until New Year's Sale
+    today = date.today()
+    next_year = today.year + 1
+    new_years_day = date(next_year, 1, 1)
+    days_until_sale = (new_years_day - today).days
+        
 
     try:
         with open("request.csv", "rt") as csv_file:
@@ -70,8 +83,9 @@ def main():
         print("Error: You do not have permission to read 'request.csv'.")
 
     except KeyError as e:
-        print(f"Error: Product ID {e} not found in request.csv file")
+        print(f"Error: Product ID {e} not found in request.csv was not found in products dicionary")
 
+    print(f"\n🎉 Only {days_until_sale} day(s) until our New Year's Sale on January 1st!")
 if __name__ == "__main__":
     main()                
 
