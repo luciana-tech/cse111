@@ -70,7 +70,7 @@ def main():
         print("Error: You do not have permission to read 'request.csv'.")
 
     except KeyError as e:
-        print(f"Error: Product ID {e} not found in products dictionary.")
+        print(f"Error: Product ID {e} not found in request.csv file")
 
 if __name__ == "__main__":
     main()                
