@@ -1,7 +1,9 @@
 import tkinter as tk
 from tkinter import ttk, messagebox
 from expense_tracker import (
-    add_expense, add_saving, view_expenses, view_savings, total_by_category,
+    add_expense, add_saving, view_expenses, view_savings, total_by_category, delete_expense
+    delete_expense(date, amountt, category, description)
+    tree.delete(selected[0])
     CATEGORIES
 )
 
@@ -45,6 +47,7 @@ def handle_add_expense():
         desc = desc_entry.get()
         cat = category_var.get()
         expense = add_expense(data, cat, amt, desc)
+        tree.insert("", tk.END, values=(data, amt, cat, desc))  # ← Add this line
         show_message(f"✅ Expense added:\n{expense}")
     except Exception as e:
         messagebox.showerror("Error", str(e))
@@ -78,6 +81,37 @@ def handle_total_by_category():
     total = total_by_category(cat)
     show_message(f"📊 Total for '{cat}': {total['total']} in {total['count']} entries")
 
+def handle_edit_selected():
+    selected = tree.selection()
+    if not selected:
+        messagebox.showwarning("Select Row", "Please select an expense to edit.")
+        return
+
+    item = tree.item(selected[0])
+    date, amt, cat, desc = item["values"]
+
+    # Fill entries for editing
+    date_entry.delete(0, tk.END)
+    date_entry.insert(0, date)
+    amount_entry.delete(0, tk.END)
+    amount_entry.insert(0, amt)
+    desc_entry.delete(0, tk.END)
+    desc_entry.insert(0, desc)
+    category_var.set(cat)
+
+def handle_delete_selected():
+    selected = tree.selection()
+    if not selected:
+        messagebox.showwarning("Select Row", "Please select an expense to delete.")
+        return
+    item = tree.item(selected[0])
+    date, amt, cat, desc = item["values"]
+
+    from expense_tracker import delete_expense
+    delete_expense(date, amt, cat, desc)
+    tree.delete(selected[0])
+    messagebox.showinfo("Deleted", "Expense deleted successfully.")
+
 # ------------------- Buttons -------------------
 btn_font = ('Arial', 12)
 
@@ -86,6 +120,16 @@ tk.Button(root, text="Add Saving", command=handle_add_saving, font=btn_font, wid
 tk.Button(root, text="View Expenses", command=handle_view_expenses, font=btn_font, width=20).grid(row=5, column=0, pady=10)
 tk.Button(root, text="View Savings", command=handle_view_savings, font=btn_font, width=20).grid(row=5, column=1, pady=10)
 tk.Button(root, text="Total by Category", command=handle_total_by_category, font=btn_font, width=43).grid(row=6, column=0, columnspan=2)
+tk.Button(root, text="Edit Selected", command=handle_edit_selected, font=btn_font, width=20).grid(row=7, column=0, pady=5)
+tk.Button(root, text="Delete Selected", command=handle_delete_selected, font=btn_font, width=20).grid(row=7, column=1, pady=5)
 
 
 root.mainloop()
+
+# ------------------- Treeview Display -------------------
+tree = ttk.Treeview(root, columns=("Date", "Amount", "Category", "Description"), show="headings", height=5)
+tree.heading("Date", text="Date")
+tree.heading("Amount", text="Amount")
+tree.heading("Category", text="Category")
+tree.heading("Description", text="Description")
+tree.grid(row=8, column=0, columnspan=2, pady=10)
