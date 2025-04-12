@@ -86,3 +86,6 @@ tk.Button(root, text="Add Saving", command=handle_add_saving, font=btn_font, wid
 tk.Button(root, text="View Expenses", command=handle_view_expenses, font=btn_font, width=20).grid(row=5, column=0, pady=10)
 tk.Button(root, text="View Savings", command=handle_view_savings, font=btn_font, width=20).grid(row=5, column=1, pady=10)
 tk.Button(root, text="Total by Category", command=handle_total_by_category, font=btn_font, width=43).grid(row=6, column=0, columnspan=2)
+
+
+root.mainloop()
