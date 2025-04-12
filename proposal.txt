@@ -10,18 +10,22 @@ CSE 111 Proposal for a Student Chosen Program
     knowledge.)
 
 1. What is the title of your program?
+Expense tracker
 
 2. What real-world problem will your program address or help to solve?
+Track mt expenses and manage my finances
 
 3. What will you learn from developing this program?
+I will learn to use programming to solve life problems
 
 4. What Python modules will your program use?
+csv, datetime, os
 
     (Some examples are: csv, datetime, functools, matplotlib, math,
     pandas, pytest, random, requests, and tkinter.)
 
 5. List the names of functions you will need?
-
+add_expense, update_expense, delete_expense, view_expenses, summary, monthly_summary, set_budget, check_budget, export_to_csv 
     (Remember that the most reusable functions don't get user input and
     don't print results but instead have parameters and return a result.
     Functions that get user input and print results are important and do
@@ -34,4 +38,5 @@ CSE 111 Proposal for a Student Chosen Program
     to have parameters and return a result.)
 
 6. List the names of the test functions you will write.
+setup, test_add_expense, test_update_expense, test_delete_expense, test_monthly_summary, test_budget_check  
 
