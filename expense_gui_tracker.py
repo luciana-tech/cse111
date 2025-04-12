@@ -1,17 +1,25 @@
 import tkinter as tk
 from tkinter import ttk, messagebox
 from expense_tracker import (
-    add_expense, add_saving, view_expenses, view_savings, total_by_category, delete_expense
-    delete_expense(date, amountt, category, description)
-    tree.delete(selected[0])
+    add_expense, add_saving, view_expenses, view_savings,
+    total_by_category, set_budget, check_budget,
+    set_monthly_goal, get_monthly_goal,
     CATEGORIES
 )
 
 # ------------------- GUI Setup -------------------
 root = tk.Tk()
 root.title("Expense Tracker")
-root.geometry("600x600")
+root.geometry("600x650")
 root.configure(padx=20, pady=20)
+
+# ------------------- Treeview for Viewing Expenses -------------------
+columns = ("Date", "Amount", "Category", "Description")
+tree = ttk.Treeview(root, columns=columns, show="headings", height=8)
+for col in columns:
+    tree.heading(col, text=col)
+    tree.column(col, anchor="center", width=100)
+tree.grid(row=12, column=0, columnspan=2, pady=10)
 
 # ------------------- Labels & Inputs -------------------
 tk.Label(root, text="Date (YYYY-MM-DD):", font=('Arial', 12)).grid(row=0, column=0, sticky="w")
@@ -31,9 +39,13 @@ category_var = tk.StringVar()
 category_dropdown = ttk.Combobox(root, textvariable=category_var, values=CATEGORIES, font=('Arial', 12), width=28)
 category_dropdown.grid(row=3, column=1)
 
+tk.Label(root, text="Month (YYYY-MM):", font=('Arial', 12)).grid(row=4, column=0, sticky="w")
+month_entry = tk.Entry(root, font=('Arial', 12), width=30)
+month_entry.grid(row=4, column=1)
+
 # ------------------- Output Display -------------------
 output_box = tk.Text(root, height=15, width=70, font=('Consolas', 10))
-output_box.grid(row=7, column=0, columnspan=2, pady=20)
+output_box.grid(row=11, column=0, columnspan=2, pady=10)
 
 def show_message(text):
     output_box.delete("1.0", tk.END)
@@ -47,7 +59,8 @@ def handle_add_expense():
         desc = desc_entry.get()
         cat = category_var.get()
         expense = add_expense(data, cat, amt, desc)
-        tree.insert("", tk.END, values=(data, amt, cat, desc))  # ← Add this line
+        tree.insert("", tk.END, values=(data, amt, cat, desc))  
+        
         show_message(f"✅ Expense added:\n{expense}")
     except Exception as e:
         messagebox.showerror("Error", str(e))
@@ -99,11 +112,17 @@ def handle_edit_selected():
     desc_entry.insert(0, desc)
     category_var.set(cat)
 
+    from expense_tracker import delete_expense
+    delete_expense(date, amt, cat, desc)
+    tree.delete(selected[0])
+
+
 def handle_delete_selected():
     selected = tree.selection()
     if not selected:
         messagebox.showwarning("Select Row", "Please select an expense to delete.")
         return
+
     item = tree.item(selected[0])
     date, amt, cat, desc = item["values"]
 
@@ -112,24 +131,59 @@ def handle_delete_selected():
     tree.delete(selected[0])
     messagebox.showinfo("Deleted", "Expense deleted successfully.")
 
+    # Set the monthly budget based on input month and amount
+def handle_set_budget():
+    try:
+        month = month_entry.get()
+        amt = float(amount_entry.get())
+        msg = set_budget(month, amt)
+        show_message(msg)
+    except Exception as e:
+        messagebox.showerror("Error", str(e))
+
+# Check current budget usage and remaining amount
+def handle_check_budget():
+    month = month_entry.get()
+    msg = check_budget(month)
+    show_message(msg)
+
+# Set a monthly financial goal (e.g. save for vacation)
+def handle_set_goal():
+    try:
+        month = month_entry.get()
+        desc = desc_entry.get()
+        msg = set_monthly_goal(month, desc)
+        show_message(msg)
+    except Exception as e:
+        messagebox.showerror("Error", str(e))
+
+# View current goal for a selected month
+def handle_view_goal():
+    month = month_entry.get()
+    msg = get_monthly_goal(month)
+    show_message(f"🎯 Goal for {month}:\n{msg}")
+
+
 # ------------------- Buttons -------------------
 btn_font = ('Arial', 12)
 
-tk.Button(root, text="Add Expense", command=handle_add_expense, font=btn_font, width=20).grid(row=4, column=0, pady=10)
-tk.Button(root, text="Add Saving", command=handle_add_saving, font=btn_font, width=20).grid(row=4, column=1, pady=10)
-tk.Button(root, text="View Expenses", command=handle_view_expenses, font=btn_font, width=20).grid(row=5, column=0, pady=10)
-tk.Button(root, text="View Savings", command=handle_view_savings, font=btn_font, width=20).grid(row=5, column=1, pady=10)
-tk.Button(root, text="Total by Category", command=handle_total_by_category, font=btn_font, width=43).grid(row=6, column=0, columnspan=2)
-tk.Button(root, text="Edit Selected", command=handle_edit_selected, font=btn_font, width=20).grid(row=7, column=0, pady=5)
-tk.Button(root, text="Delete Selected", command=handle_delete_selected, font=btn_font, width=20).grid(row=7, column=1, pady=5)
+tk.Button(root, text="Add Expense", command=handle_add_expense, font=btn_font, width=20).grid(row=5, column=0, pady=10)
+tk.Button(root, text="Add Saving", command=handle_add_saving, font=btn_font, width=20).grid(row=5, column=1, pady=10)
+
+tk.Button(root, text="View Expenses", command=handle_view_expenses, font=btn_font, width=20).grid(row=6, column=0, pady=10)
+tk.Button(root, text="View Savings", command=handle_view_savings, font=btn_font, width=20).grid(row=6, column=1, pady=10)
+
+tk.Button(root, text="Total by Category", command=handle_total_by_category, font=btn_font, width=43).grid(row=7, column=0, columnspan=2)
+
+tk.Button(root, text="Edit Selected", command=handle_edit_selected, font=btn_font, width=20).grid(row=8, column=0, pady=5)
+tk.Button(root, text="Delete Selected", command=handle_delete_selected, font=btn_font, width=20).grid(row=8, column=1, pady=5)
+
+tk.Button(root, text="Set Budget", command=handle_set_budget, font=btn_font, width=20).grid(row=9, column=0, pady=10)
+tk.Button(root, text="Check Budget", command=handle_check_budget, font=btn_font, width=20).grid(row=9, column=1, pady=10)
+
+tk.Button(root, text="Set Monthly Goal", command=handle_set_goal, font=btn_font, width=20).grid(row=10, column=0, pady=10)
+tk.Button(root, text="View Monthly Goal", command=handle_view_goal, font=btn_font, width=20).grid(row=10, column=1, pady=10)
+
 
 
 root.mainloop()
-
-# ------------------- Treeview Display -------------------
-tree = ttk.Treeview(root, columns=("Date", "Amount", "Category", "Description"), show="headings", height=5)
-tree.heading("Date", text="Date")
-tree.heading("Amount", text="Amount")
-tree.heading("Category", text="Category")
-tree.heading("Description", text="Description")
-tree.grid(row=8, column=0, columnspan=2, pady=10)

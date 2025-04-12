@@ -16,6 +16,7 @@ CATEGORIES = [
 expenses = []
 budgets = {}
 savings = []
+goals = {}
 
 def add_saving(date, amount, description=""):
     saving = {
@@ -126,3 +127,42 @@ def total_by_category(category):
     total = sum(exp["amount"] for exp in filtered)
     return {"category": category, "total": total, "count": len(filtered)}
 
+def set_budget(month: str, amount: float):
+    budgets[month] = amount
+    return f"✅ Budget of ${amount:.2f} set for {month}"
+
+# Get the total expenses for a given month
+def get_monthly_expense_total(month: str):
+    total = 0
+    for expense in expenses:
+        exp_month = expense['date'][:7]
+        if exp_month == month:
+            total += expense['amount']
+    return total
+
+# Check the remaining budget and give a warning if only 10% is left
+def check_budget(month: str):
+    if month not in budgets:
+        return f"⚠️ No budget set for {month}"
+
+    budget = budgets[month]
+    spent = get_monthly_expense_total(month)
+    remaining = budget - spent
+    percent_left = (remaining / budget) * 100
+
+    status = f"💵 Budget for {month}: ${budget:.2f}\n"
+    status += f"🧾 Spent: ${spent:.2f} | Remaining: ${remaining:.2f} ({percent_left:.1f}%)\n"
+
+    if percent_left <= 10:
+        status += "⚠️ Warning: Only 10% of your budget remains!"
+
+    return status
+
+# Set a monthly financial goal 
+def set_monthly_goal(month: str, goal_description: str):
+    goals[month] = goal_description
+    return f"🎯 Monthly goal set for {month}: {goal_description}"
+
+# Get the monthly goal (if set)
+def get_monthly_goal(month: str):
+    return goals.get(month, "No goal set for this month.")
