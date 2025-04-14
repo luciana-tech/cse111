@@ -132,20 +132,26 @@ def handle_delete_selected():
     messagebox.showinfo("Deleted", "Expense deleted successfully.")
 
     # Set the monthly budget based on input month and amount
+# Set the monthly budget based on input month and amount
 def handle_set_budget():
     try:
-        month = month_entry.get()
+        month_str = month_entry.get()
         amt = float(amount_entry.get())
-        msg = set_budget(month, amt)
-        show_message(msg)
+        year, month = map(int, month_str.split("-"))
+        msg = set_budget(month, year, amt)
+        show_message(f"✅ Budget set:\n{msg}")
     except Exception as e:
         messagebox.showerror("Error", str(e))
 
 # Check current budget usage and remaining amount
 def handle_check_budget():
-    month = month_entry.get()
-    msg = check_budget(month)
-    show_message(msg)
+    try:
+        month_str = month_entry.get()
+        year, month = map(int, month_str.split("-"))
+        msg = check_budget(month, year)
+        show_message(msg)
+    except Exception as e:
+        messagebox.showerror("Error", str(e))
 
 # Set a monthly financial goal (e.g. save for vacation)
 def handle_set_goal():
