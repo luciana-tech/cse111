@@ -131,7 +131,6 @@ def handle_delete_selected():
     tree.delete(selected[0])
     messagebox.showinfo("Deleted", "Expense deleted successfully.")
 
-    # Set the monthly budget based on input month and amount
 # Set the monthly budget based on input month and amount
 def handle_set_budget():
     try:
@@ -153,7 +152,7 @@ def handle_check_budget():
     except Exception as e:
         messagebox.showerror("Error", str(e))
 
-# Set a monthly financial goal (e.g. save for vacation)
+# Set a monthly financial goal
 def handle_set_goal():
     try:
         month = month_entry.get()
@@ -189,7 +188,5 @@ tk.Button(root, text="Check Budget", command=handle_check_budget, font=btn_font,
 
 tk.Button(root, text="Set Monthly Goal", command=handle_set_goal, font=btn_font, width=20).grid(row=10, column=0, pady=10)
 tk.Button(root, text="View Monthly Goal", command=handle_view_goal, font=btn_font, width=20).grid(row=10, column=1, pady=10)
-
-
 
 root.mainloop()
